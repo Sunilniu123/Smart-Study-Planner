@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>Smart Study Planner</title>
+
+  <!-- CSS -->
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Manifest -->
+
+  <link rel="manifest"
+    href="manifest.json">
+
+  <!-- Font Awesome -->
+
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Chart.js -->
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- FullCalendar -->
+
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+
+  <!-- Sortable -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+
+  <!-- GSAP -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <!-- Confetti -->
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+</head>
+
+<body>
+
+  <!-- LOADER -->
+
+  <div id="loader">
+
+    <h1>📚 Smart Study Planner</h1>
+
+    <p>Loading...</p>
+
+  </div>
+
+  <!-- MAIN CONTAINER -->
+
+  <div class="container">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar"
+      id="sidebar">
+
+      <div class="logo">
+
+        <h1>📚 Planner</h1>
+
+        <button id="menuBtn">
+          ☰
+        </button>
+
+      </div>
+
+      <!-- THEME -->
+
+      <button id="themeBtn">
+        🌙 Toggle Theme
+      </button>
+
+      <!-- THEME COLORS -->
+
+      <div class="themeColors">
+
+        <div class="color blue"
+          onclick="setTheme('blue')"></div>
+
+        <div class="color purple"
+          onclick="setTheme('purple')"></div>
+
+        <div class="color green"
+          onclick="setTheme('green')"></div>
+
+      </div>
+
+      <!-- STATS -->
+
+      <div class="stats">
+
+        <h3>
+          ⭐ XP:
+          <span id="xp">0</span>
+        </h3>
+
+        <h3>
+          🔥 Streak:
+          <span id="streak">0</span>
+        </h3>
+
+        <h3>
+          🏅 Level:
+          <span id="level">1</span>
+        </h3>
+
+      </div>
+
+      <!-- DAILY CHALLENGE -->
+
+      <div class="challenge">
+
+        <h3>🎯 Daily Challenge</h3>
+
+        <p id="challengeText">
+
+          Complete 3 Tasks Today
+
+        </p>
+
+      </div>
+
+      <!-- MOTIVATION -->
+
+      <div class="quoteBox">
+
+        <h3>💡 Motivation</h3>
+
+        <p id="quote"></p>
+
+      </div>
+
+    </aside>
+
+    <!-- MAIN -->
+
+    <main>
+
+      <!-- HEADER -->
+
+      <section class="card full">
+
+        <!-- TITLE -->
+
+        <div class="headerTitle">
+
+          <h1>
+            Smart Study Planner
+          </h1>
+
+          <div id="clock"></div>
+
+        </div>
+
+        <!-- WEATHER -->
+
+        <div class="weatherBox">
+
+          <button
+            id="weatherBtn"
+            onclick="toggleWeather()">
+
+            🌤 Show Weather
+
+          </button>
+
+          <div id="weather"></div>
+
+        </div>
+
+      </section>
+
+      <!-- ADD TASK -->
+
+      <section class="card">
+
+        <h2>Add Task</h2>
+
+        <input
+          type="text"
+          id="taskInput"
+          placeholder="Enter Task">
+
+        <input
+          type="text"
+          id="subjectInput"
+          placeholder="Enter Subject">
+
+        <select id="priorityInput">
+
+          <option value="High">
+            High
+          </option>
+
+          <option value="Medium">
+            Medium
+          </option>
+
+          <option value="Low">
+            Low
+          </option>
+
+        </select>
+
+        <input
+          type="date"
+          id="dateInput">
+
+        <button onclick="addTask()">
+
+          ➕ Add Task
+
+        </button>
+
+        <button onclick="clearTasks()">
+
+          🗑 Clear All
+
+        </button>
+
+      </section>
+
+      <!-- SEARCH FILTER -->
+
+      <section class="card">
+
+        <h2>Search / Filter</h2>
+
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Search Task">
+
+        <select id="filterInput">
+
+          <option value="all">
+            All
+          </option>
+
+          <option value="completed">
+            Completed
+          </option>
+
+          <option value="pending">
+            Pending
+          </option>
+
+        </select>
+
+        <select id="sortInput">
+
+          <option value="default">
+            Sort
+          </option>
+
+          <option value="priority">
+            Priority
+          </option>
+
+          <option value="date">
+            Date
+          </option>
+
+        </select>
+
+        <!-- COUNTERS -->
+
+        <div class="taskCounters">
+
+          <p>
+            Total:
+            <span id="totalTasks">0</span>
+          </p>
+
+          <p>
+            Completed:
+            <span id="completedTasks">0</span>
+          </p>
+
+          <p>
+            Pending:
+            <span id="pendingTasks">0</span>
+          </p>
+
+        </div>
+
+      </section>
+
+      <!-- TASKS -->
+
+      <section class="card full">
+
+        <div class="taskHeader">
+
+          <h2>Tasks</h2>
+
+          <button
+            onclick="toggleFocusMode()">
+
+            🎯 Focus Mode
+
+          </button>
+
+        </div>
+
+        <ul id="taskList"></ul>
+
+      </section>
+
+      <!-- POMODORO -->
+
+      <section class="card">
+
+        <h2>Pomodoro Timer</h2>
+
+        <h1 id="pomodoro">
+          25:00
+        </h1>
+
+        <button
+          onclick="startPomodoro()">
+
+          ▶ Start
+
+        </button>
+
+        <button
+          onclick="resetPomodoro()">
+
+          🔄 Reset
+
+        </button>
+
+      </section>
+
+      <!-- STOPWATCH -->
+
+      <section class="card">
+
+        <h2>Stopwatch</h2>
+
+        <h1 id="stopwatch">
+          00:00:00
+        </h1>
+
+        <button
+          onclick="startStopwatch()">
+
+          ▶ Start
+
+        </button>
+
+        <button
+          onclick="stopStopwatch()">
+
+          ⏹ Stop
+
+        </button>
+
+        <button
+          onclick="resetStopwatch()">
+
+          🔄 Reset
+
+        </button>
+
+      </section>
+
+      <!-- COUNTDOWN -->
+
+      <section class="card">
+
+        <h2>Countdown Timer</h2>
+
+        <input
+          type="number"
+          id="countdownMinutes"
+          placeholder="Minutes">
+
+        <h1 id="countdown">
+          00:00
+        </h1>
+
+        <button
+          onclick="startCountdown()">
+
+          ⏳ Start Countdown
+
+        </button>
+
+      </section>
+
+      <!-- GOAL -->
+
+      <section class="card">
+
+        <h2>Daily Goal</h2>
+
+        <input
+          type="number"
+          id="goalInput"
+          placeholder="Study Hours">
+
+        <button onclick="saveGoal()">
+
+          💾 Save Goal
+
+        </button>
+
+        <div class="progressBar">
+
+          <div id="goalProgress"></div>
+
+        </div>
+
+        <p id="goalText"></p>
+
+      </section>
+
+      <!-- NOTES -->
+
+      <section class="card">
+
+        <h2>Quick Notes</h2>
+
+        <textarea
+          id="notes"
+          placeholder="Write Notes Here..."></textarea>
+
+        <button onclick="saveNotes()">
+
+          💾 Save Notes
+
+        </button>
+
+      </section>
+
+      <!-- MUSIC -->
+
+      <section class="card">
+
+        <h2>Study Music</h2>
+
+        <button onclick="playMusic()">
+
+          🎵 Play Music
+
+        </button>
+
+        <button onclick="pauseMusic()">
+
+          ⏸ Pause Music
+
+        </button>
+
+      </section>
+
+      <!-- CALENDAR -->
+
+      <section class="card">
+
+        <h2>Calendar</h2>
+
+        <div id="calendar"></div>
+
+      </section>
+
+      <!-- ANALYTICS -->
+
+      <section class="card">
+
+        <h2>Analytics</h2>
+
+        <canvas id="chart"></canvas>
+
+        <p id="productivity"></p>
+
+      </section>
+
+      <!-- SUBJECT ANALYSIS -->
+
+      <section class="card">
+
+        <h2>Subject Analysis</h2>
+
+        <div id="subjectAnalysis"></div>
+
+      </section>
+
+      <!-- BADGES -->
+
+      <section class="card">
+
+        <h2>Achievements</h2>
+
+        <div id="badges"></div>
+
+      </section>
+
+      <!-- HISTORY -->
+
+      <section class="card">
+
+        <h2>Study History</h2>
+
+        <div id="history"></div>
+
+      </section>
+
+      <!-- VOICE -->
+
+      <section class="card">
+
+        <h2>Voice Features</h2>
+
+        <button onclick="startVoice()">
+
+          🎤 Voice Command
+
+        </button>
+
+        <button onclick="readTasks()">
+
+          🔊 Read Tasks
+
+        </button>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- FLOAT BUTTON -->
+
+  <button id="floatingBtn"
+    onclick="window.scrollTo({
+      top:0,
+      behavior:'smooth'
+    })">
+
+    ⬆
+
+  </button>
+
+  <!-- TOAST -->
+
+  <div id="toast"></div>
+
+  <!-- JAVASCRIPT -->
+
+  <script src="script.js"></script>
+
+</body>
+</html>

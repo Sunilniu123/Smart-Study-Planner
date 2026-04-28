@@ -1,0 +1,571 @@
+/* ================= GLOBAL ================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Arial,sans-serif;
+}
+
+:root{
+  --primary:#38bdf8;
+  --bg:#0f172a;
+  --card:rgba(255,255,255,0.08);
+  --text:#ffffff;
+}
+
+body{
+  background:linear-gradient(-45deg,#0f172a,#111827,#1e293b,#0f172a);
+  background-size:400% 400%;
+  animation:bg 12s ease infinite;
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+@keyframes bg{
+
+  0%{
+    background-position:0% 50%;
+  }
+
+  50%{
+    background-position:100% 50%;
+  }
+
+  100%{
+    background-position:0% 50%;
+  }
+}
+
+/* ================= LOADER ================= */
+
+#loader{
+  position:fixed;
+  inset:0;
+  background:#0f172a;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+#loader h1{
+  font-size:40px;
+  margin-bottom:10px;
+}
+
+#loader p{
+  opacity:0.7;
+  font-size:18px;
+}
+
+/* ================= CONTAINER ================= */
+
+.container{
+  display:flex;
+  min-height:100vh;
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+  width:280px;
+  padding:20px;
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(12px);
+  border-right:1px solid rgba(255,255,255,0.1);
+  transition:0.3s;
+}
+
+.sidebar.active{
+  margin-left:-280px;
+}
+
+.logo{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo h1{
+  font-size:28px;
+}
+
+#menuBtn{
+  width:45px;
+  height:45px;
+  border:none;
+  border-radius:10px;
+  background:var(--primary);
+  color:white;
+  cursor:pointer;
+}
+
+/* ================= THEME COLORS ================= */
+
+.themeColors{
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+}
+
+.color{
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  cursor:pointer;
+  border:2px solid white;
+}
+
+.blue{
+  background:#38bdf8;
+}
+
+.purple{
+  background:#a855f7;
+}
+
+.green{
+  background:#22c55e;
+}
+
+/* ================= STATS ================= */
+
+.stats{
+  margin-top:25px;
+}
+
+.stats h3{
+  margin-top:15px;
+}
+
+/* ================= CHALLENGE ================= */
+
+.challenge{
+  margin-top:25px;
+  padding:15px;
+  border-radius:15px;
+  background:rgba(255,255,255,0.08);
+}
+
+/* ================= QUOTES ================= */
+
+.quoteBox{
+  margin-top:20px;
+  padding:15px;
+  border-radius:15px;
+  background:rgba(255,255,255,0.08);
+  line-height:1.8;
+}
+
+/* ================= MAIN ================= */
+
+main{
+  flex:1;
+  padding:20px;
+  display:grid;
+  grid-template-columns:
+  repeat(auto-fit,minmax(320px,1fr));
+  gap:20px;
+}
+
+/* ================= CARD ================= */
+
+.card{
+  background:var(--card);
+  backdrop-filter:blur(10px);
+  border-radius:22px;
+  padding:20px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.3);
+
+  /* IMPORTANT FIX */
+
+  overflow:visible;
+
+  word-wrap:break-word;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+  transition:0.3s;
+}
+
+.full{
+  grid-column:1/-1;
+}
+
+/* ================= HEADER ================= */
+
+.headerTitle{
+  width:100%;
+}
+
+.headerTitle h1{
+  font-size:36px;
+}
+
+#clock{
+  margin-top:10px;
+  font-size:26px;
+  font-weight:bold;
+}
+
+/* ================= WEATHER ================= */
+
+.weatherBox{
+  margin-top:25px;
+  width:100%;
+}
+
+#weatherBtn{
+  max-width:250px;
+}
+
+#weather{
+  margin-top:15px;
+  padding:18px;
+  border-radius:15px;
+  background:rgba(255,255,255,0.08);
+
+  width:100%;
+
+  display:none;
+
+  line-height:2;
+
+  overflow-wrap:break-word;
+
+  white-space:normal;
+}
+
+/* ================= INPUTS ================= */
+
+input,
+select,
+textarea,
+button{
+  width:100%;
+  margin-top:12px;
+  padding:12px;
+  border:none;
+  outline:none;
+  border-radius:12px;
+  font-size:15px;
+}
+
+textarea{
+  min-height:150px;
+  resize:none;
+}
+
+/* ================= BUTTON ================= */
+
+button{
+  background:var(--primary);
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.3s;
+}
+
+button:hover{
+  transform:scale(1.03);
+  opacity:0.9;
+}
+
+/* ================= TASKS ================= */
+
+ul{
+  padding:0;
+}
+
+ul#taskList li{
+  list-style:none;
+  background:rgba(255,255,255,0.08);
+
+  padding:12px;
+  margin-top:12px;
+  border-radius:15px;
+
+  /* FORCE SAME SIZE */
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+
+  /* FIX OVERFLOW ISSUE */
+  overflow:hidden;
+
+  /* TEXT CONTROL */
+  word-break:break-word;
+  white-space:normal;
+
+  /* IMPORTANT */
+  display:block;
+}
+
+ul li:hover{
+  transform:scale(1.01);
+}
+
+ul li h3{
+  font-size:16px;
+  margin:0;
+}
+
+ul li p{
+  font-size:13px;
+  opacity:0.9;
+  margin:2px 0;
+}
+
+/* ================= PRIORITY ================= */
+
+.high{
+  border-left:6px solid red;
+}
+
+.medium{
+  border-left:6px solid orange;
+}
+
+.low{
+  border-left:6px solid green;
+}
+
+/* ================= COMPLETED ================= */
+
+.completed{
+  opacity:0.6;
+  text-decoration:line-through;
+}
+
+/* ================= TASK HEADER ================= */
+
+.taskHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+/* ================= COUNTERS ================= */
+
+.taskCounters{
+  margin-top:20px;
+}
+
+.taskCounters p{
+  margin-top:10px;
+}
+
+/* ================= TIMERS ================= */
+
+#pomodoro,
+#stopwatch,
+#countdown{
+  margin-top:20px;
+  text-align:center;
+  font-size:42px;
+  font-weight:bold;
+}
+
+/* ================= PROGRESS BAR ================= */
+
+.progressBar{
+  width:100%;
+  height:20px;
+  background:rgba(255,255,255,0.1);
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:15px;
+}
+
+#goalProgress{
+  width:0%;
+  height:100%;
+  background:limegreen;
+  transition:0.4s;
+}
+
+/* ================= CALENDAR ================= */
+
+#calendar{
+  height:400px;
+  overflow:hidden;
+  background:white;
+  color:black;
+  border-radius:15px;
+  padding:15px;
+}
+
+/* ================= ANALYTICS ================= */
+
+#productivity{
+  margin-top:15px;
+  font-size:18px;
+}
+
+/* ================= SUBJECT ANALYSIS ================= */
+
+#subjectAnalysis{
+  margin-top:15px;
+}
+
+.subjectBar{
+  margin-top:15px;
+}
+
+.subjectBar p{
+  margin-bottom:5px;
+}
+
+.bar{
+  width:100%;
+  height:16px;
+  background:rgba(255,255,255,0.1);
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.fill{
+  height:100%;
+  background:var(--primary);
+}
+
+/* ================= BADGES ================= */
+
+#badges{
+  line-height:2;
+  margin-top:15px;
+}
+
+/* ================= HISTORY ================= */
+
+#history{
+  margin-top:15px;
+  line-height:2;
+}
+
+/* ================= FLOAT BUTTON ================= */
+
+#floatingBtn{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+
+  width:60px;
+  height:60px;
+
+  border-radius:50%;
+  border:none;
+
+  background:var(--primary);
+
+  color:white;
+
+  font-size:22px;
+
+  cursor:pointer;
+
+  z-index:1000;
+}
+
+/* ================= TOAST ================= */
+
+#toast{
+  position:fixed;
+  top:20px;
+  right:20px;
+
+  background:#22c55e;
+
+  color:white;
+
+  padding:15px 25px;
+
+  border-radius:10px;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:0.4s;
+
+  z-index:9999;
+}
+
+#toast.show{
+  opacity:1;
+}
+
+/* ================= FOCUS MODE ================= */
+
+.focus-mode main{
+  grid-template-columns:1fr;
+}
+
+.focus-mode .sidebar{
+  display:none;
+}
+
+/* ================= DARK MODE ================= */
+
+.dark{
+  background:#020617;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:900px){
+
+  .container{
+    flex-direction:column;
+  }
+
+  .sidebar{
+    width:100%;
+    border-right:none;
+    border-bottom:
+    1px solid rgba(255,255,255,0.1);
+  }
+
+  main{
+    grid-template-columns:1fr;
+  }
+
+  .headerTitle h1{
+    font-size:28px;
+  }
+
+  #clock{
+    font-size:22px;
+  }
+
+  #weatherBtn{
+    max-width:100%;
+  }
+
+  .taskHeader{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+}
+
+/* ================= SCROLLBAR ================= */
+
+::-webkit-scrollbar{
+  width:10px;
+}
+
+::-webkit-scrollbar-track{
+  background:#111827;
+}
+
+::-webkit-scrollbar-thumb{
+  background:var(--primary);
+  border-radius:10px;
+}
